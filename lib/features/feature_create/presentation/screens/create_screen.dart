@@ -7,8 +7,10 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasky/core/params/task_param.dart';
+import 'package:tasky/core/utils/custom_snackbar.dart';
 import 'package:tasky/core/widgets/app_button.dart';
 import 'package:tasky/features/feature_create/presentation/bloc/create_cubit.dart';
+import 'package:tasky/features/feature_home/presentation/screens/home_screen.dart';
 
 class CreateScreen extends StatefulWidget {
   static const routeName = '/create_screen';
@@ -40,14 +42,19 @@ class _CreateScreenState extends State<CreateScreen> {
     }
   }
 
-  void createTask(){
+   Future<void> createTask()async{
     print('path: ${path}');
     print('title: ${titleController.text}');
     print('desc: ${descController.text}');
     print('priority: ${priority}');
     print('date: ${date}');
     TaskParam newTask = TaskParam(path: path??'', title: titleController.text, desc: descController.text, priority: priority?? 'low', dueDate: date);
-    BlocProvider.of<CreateCubit>(context).addTask(newTask);
+    await BlocProvider.of<CreateCubit>(context).addTask(newTask).then((value) => {
+    CustomSnackBar(contentText: 'Task Added',backgroundColor: Colors.green).show(context),
+      Navigator.pop(context),
+      Navigator.pushReplacementNamed(context, HomePage.routeName),
+
+    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -55,7 +62,7 @@ class _CreateScreenState extends State<CreateScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime.now().add(Duration(days: 365 * 20)), // 20 years from now
+      lastDate: DateTime.now().add(const Duration(days: 365 * 20)), // 20 years from now
     );
 
     if (picked!= null && picked!= DateTime.now()) {
@@ -74,7 +81,7 @@ class _CreateScreenState extends State<CreateScreen> {
         centerTitle: false,
         title: Text('Task Details',style:textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold) ,),
         leading: IconButton(
-          icon: Icon(IconlyBold.arrow_left),
+          icon: const Icon(IconlyBold.arrow_left),
           onPressed: (){
             Navigator.pop(context);
           },
@@ -86,16 +93,16 @@ class _CreateScreenState extends State<CreateScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             GestureDetector(
               onTap: _pickImage,
               child: DottedBorder(
               borderType: BorderType.RRect,
-              radius: Radius.circular(12),
-              padding: EdgeInsets.all(6),
+              radius: const Radius.circular(12),
+              padding: const EdgeInsets.all(6),
               color: primaryColor,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
                 child: Container(
                   height: 50,
                   width: double.infinity,
@@ -103,43 +110,43 @@ class _CreateScreenState extends State<CreateScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                     Icon(path == null ? Icons.add_photo_alternate_outlined : Icons.photo_outlined,color: primaryColor,size: 30,),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(path == null ?'Add Img':'Img Added',style: textTheme.titleLarge?.copyWith(color: primaryColor),)
                   ],),
                 ),
               ),
                         ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Task Title',style: TextStyle(color: Colors.grey[700]),),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: titleController,
               decoration: InputDecoration(
                 isDense: true,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
                 hintText: 'Enter title here...',
               ),
             ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text('Task Description',style: TextStyle(color: Colors.grey[700]),),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextFormField(
                 controller: descController,
                 maxLines: 7,
                 decoration: InputDecoration(
                   isDense: true,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
                   hintText: 'Enter description here...',
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text('Priority',style: TextStyle(color: Colors.grey[700]),),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
-                padding: EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -147,13 +154,13 @@ class _CreateScreenState extends State<CreateScreen> {
                 ),
                 child: DropdownButtonFormField<String>(
                   icon: Icon(IconlyBold.arrow_down_2,color: primaryColor,),
-                  decoration: InputDecoration(border: InputBorder.none),
+                  decoration: const InputDecoration(border: InputBorder.none),
                   value: priority,
                   hint: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(CupertinoIcons.flag,size: 30,color: primaryColor,),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         'Choose Priority',
                         style: textTheme.bodyLarge
@@ -181,16 +188,16 @@ class _CreateScreenState extends State<CreateScreen> {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text('Due Date',style: TextStyle(color: Colors.grey[700]),),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
             TextField(
               readOnly: true,
               controller: TextEditingController(text: date), // Initialize with the current date
               decoration: InputDecoration(
                 isDense: true,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Colors.grey)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: const BorderSide(color: Colors.grey)),
                 hintText: 'choose due date...',
                 suffixIcon: IconButton(
                   icon: Icon(Iconsax.calendar_1,color: Theme.of(context).primaryColor,size: 30,),
@@ -198,8 +205,8 @@ class _CreateScreenState extends State<CreateScreen> {
                 ),
               ),
             ),
-              SizedBox(height: 28),
-              AppButton(title: 'Add Task', onPressed: createTask,)
+              const SizedBox(height: 28),
+              AppButton(title: 'Add Task', onPressed: createTask ,)
           ],),
         ),
       ),

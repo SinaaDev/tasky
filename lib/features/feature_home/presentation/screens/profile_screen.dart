@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: false,
         title: Text('Profile',style:textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold) ,),
         leading: IconButton(
-          icon: Icon(IconlyBold.arrow_left),
+          icon: const Icon(IconlyBold.arrow_left),
           onPressed: (){
             Navigator.pop(context);
           },
@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, state) {
 
           if(state.profileStatus is ProfileLoading){
-            return Center(child: CircularProgressIndicator(),);
+            return const Center(child: CircularProgressIndicator(),);
           }
 
           if(state.profileStatus is ProfileCompleted){
@@ -59,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                     size: 60,
                     color: Colors.purple[400],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -79,19 +79,19 @@ class ProfileScreen extends StatelessWidget {
 
   Container ProfileItem(TextTheme textTheme,String title,String subTitle) {
     return Container(
-          margin: EdgeInsets.only(bottom: 8),
-          padding: EdgeInsets.symmetric(vertical: 12,horizontal: 15),
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 15),
           height: 75,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xFFF5F5F5),
+            color: const Color(0xFFF5F5F5),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Text(title,style: textTheme.bodyMedium?.copyWith(color: Color(0x2F2F2F66).withOpacity(0.4)),),
+            Text(title,style: textTheme.bodyMedium?.copyWith(color: const Color(0x2F2F2F66).withOpacity(0.4)),),
             Text(subTitle,style: textTheme.titleLarge?.copyWith(color: Colors.grey[600],fontWeight: FontWeight.bold),),
           ],),
         );

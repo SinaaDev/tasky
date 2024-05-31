@@ -23,5 +23,8 @@ class CreateCubit extends Cubit<CreateState> {
 
   }
 
+  Future<void> deleteTask(String taskId)async{
+    await apiProvider.sendDeleteRequest(taskId);
+  }
 
 }

@@ -15,6 +15,8 @@ import 'package:tasky/features/feature_auth/presentation/bloc/auth_cubit.dart';
 import 'package:tasky/features/feature_auth/presentation/screens/sign_up_screen.dart';
 import 'package:tasky/features/feature_auth/presentation/screens/widgets/phone_field.dart';
 
+import '../../../feature_home/presentation/screens/home_screen.dart';
+
 class SignInScreen extends StatefulWidget {
   static const routeName = '/sign_in_screen';
 
@@ -34,9 +36,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Icon get eyeIcon {
     if (obscure) {
-      return Icon(Iconsax.eye_slash);
+      return const Icon(Iconsax.eye_slash);
     } else {
-      return Icon(Iconsax.eye);
+      return const Icon(Iconsax.eye);
     }
   }
 
@@ -48,6 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // login method
 
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -69,78 +72,83 @@ class _SignInScreenState extends State<SignInScreen> {
                   width: width,
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 16, left: 22),
-                    child: Text(
-                      'Login',
-                      style: textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  PhoneField(),
-                  SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 22),
-                    padding: EdgeInsets.only(left: 16),
-                    height: 50,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(12)),
-                    child: TextField(
-                      controller: passwordController,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password...',
-                          suffixIcon: IconButton(
-                            onPressed: toggleObscure,
-                            icon: eyeIcon,
-                          ),
-                          suffixIconColor: Colors.grey),
-                      obscureText: obscure,
-                      onTapOutside: (_) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 32, left: 22, right: 22),
-                    child: AppButton(title: 'Sign In', onPressed: (){
-                      BlocProvider.of<AuthCubit>(context).login(passwordController.text);
-
-                    }),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account? ',
-                        style: textTheme.bodyMedium?.copyWith(color: Colors.grey),
-                      ),
-                      CupertinoButton(
-                        child: Text(
-                          'Sign up',
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14),
+              Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16, left: 22),
+                      child: Text(
+                        'Login',
+                        style: textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, SignUpScreen.routeName);
-                        },
-                        padding: EdgeInsets.zero,
                       ),
-                      SizedBox(height: height*0.025,),
-                    ],
-                  )
-                ],
+                    ),
+                    PhoneField(),
+                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 22),
+                      padding: const EdgeInsets.only(left: 16),
+                      height: 50,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: TextFormField(
+                        controller: passwordController,
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Password...',
+                            suffixIcon: IconButton(
+                              onPressed: toggleObscure,
+                              icon: eyeIcon,
+                            ),
+                            suffixIconColor: Colors.grey),
+                        obscureText: obscure,
+                        onTapOutside: (_) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 32, left: 22, right: 22),
+                      child: AppButton(title: 'Sign In', onPressed: (){
+                        BlocProvider.of<AuthCubit>(context).login(passwordController.text).then((value) {
+                          Navigator.pushReplacementNamed(context, HomePage.routeName);
+                        });
+                      }),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                        ),
+                        CupertinoButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, SignUpScreen.routeName);
+                          },
+                          padding: EdgeInsets.zero,
+                          child: const Text(
+                            'Sign up',
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
+                          ),
+                        ),
+                        SizedBox(height: height*0.025,),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),

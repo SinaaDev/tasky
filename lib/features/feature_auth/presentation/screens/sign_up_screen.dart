@@ -1,19 +1,13 @@
-import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:jwt_decode/jwt_decode.dart';
-import 'package:tasky/core/params/user_params.dart';
 import 'package:tasky/core/widgets/app_button.dart';
-import 'package:tasky/features/feature_auth/data/remote/api_provider.dart';
 import 'package:tasky/features/feature_auth/presentation/bloc/auth_cubit.dart';
 import 'package:tasky/features/feature_auth/presentation/screens/sign_in_screen.dart';
 import 'package:tasky/features/feature_auth/presentation/screens/widgets/phone_field.dart';
-import 'package:tasky/features/feature_home/presentation/screens/home_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/sign_up_screen';
@@ -37,9 +31,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Icon get eyeIcon {
     if (obscure) {
-      return Icon(Iconsax.eye_slash);
+      return const Icon(Iconsax.eye_slash);
     } else {
-      return Icon(Iconsax.eye);
+      return const Icon(Iconsax.eye);
     }
   }
 
@@ -60,8 +54,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: SafeArea(
@@ -81,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 16, left: 22),
+                  padding: const EdgeInsets.only(bottom: 16, left: 22),
                   child: Text(
                     'Login',
                     style: textTheme.headlineSmall?.copyWith(
@@ -91,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 22),
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
                   height: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -99,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextField(
                     controller: nameController,
                     textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Name...',
                     ),
@@ -108,12 +100,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 PhoneField(),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 22),
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
                   height: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -121,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextField(
                     controller: experienceController,
                     textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Years of experince...',
                         suffixIconColor: Colors.grey),
@@ -130,16 +122,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 22),
-                  padding: EdgeInsets.only(left: 16, right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   height: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12)),
                   child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(border: InputBorder.none),
+                    decoration: const InputDecoration(border: InputBorder.none),
                     value: levelController,
                     hint: Text(
                       'Choose Experience Level',
@@ -166,10 +158,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     }).toList(),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 22),
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
                   height: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -177,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextField(
                     controller: addressController,
                     textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Address...',
                         suffixIconColor: Colors.grey),
@@ -186,10 +178,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 22),
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
                   height: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -212,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       top: 32, left: 22, right: 22),
                   child: AppButton(
                       title: 'Sign Up',
@@ -233,14 +225,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       userId != null
                                           ? Icons.check
                                           : Icons.error_outlined,
-                                      color: Color(0xFF5F33E1),
+                                      color: const Color(0xFF5F33E1),
                                       size: 40,
                                     ),
                                     title: Text(
-                                        userId != null? 'Succeed' : 'Failed',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        userId != null? 'Succeed' : 'Failed',style: const TextStyle(fontWeight: FontWeight.bold),),
                                     content: Text(userId != null
                                         ? 'You have successfully Signed up now go to sign in page and login'
-                                        : 'Try again',style: TextStyle(fontSize: 24),textAlign: TextAlign.center,),
+                                        : 'Try again',style: const TextStyle(fontSize: 24),textAlign: TextAlign.center,),
                                 actions: [
                                   AppButton(title: userId != null? 'Sign In':'Ok', onPressed: (){
                                     if(userId != null){
@@ -255,7 +247,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       }),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -264,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       style: textTheme.bodyMedium?.copyWith(color: Colors.grey),
                     ),
                     CupertinoButton(
-                      child: Text(
+                      child: const Text(
                         'Sign in',
                         style: TextStyle(
                             decoration: TextDecoration.underline,

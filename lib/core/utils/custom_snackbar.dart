@@ -12,10 +12,10 @@ class CustomSnackBar {
   void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(contentText,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+        content: Text(contentText,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.fixed, // Fixed position
-        duration: Duration(seconds: 3), // Default duration
+        duration: const Duration(seconds: 3), // Default duration
       ),
     );
   }

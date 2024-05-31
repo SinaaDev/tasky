@@ -8,14 +8,16 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky/core/params/edit_task_params.dart';
 import 'package:tasky/core/utils/custom_snackbar.dart';
+import 'package:tasky/features/feature_create/presentation/bloc/create_cubit.dart';
 import 'package:tasky/features/feature_home/data/model/OneTaskModel.dart';
 import 'package:tasky/features/feature_home/data/remote/api_provider.dart';
 import 'package:tasky/features/feature_home/presentation/bloc/home_cubit/home_cubit.dart';
+import 'package:tasky/features/feature_home/presentation/screens/home_screen.dart';
 
 class DetailsScreen extends StatefulWidget {
   static const routeName = '/details_screen';
 
-  DetailsScreen({super.key});
+  const DetailsScreen({super.key});
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -31,7 +33,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate:
-          DateTime.now().add(Duration(days: 365 * 20)), // 20 years from now
+          DateTime.now().add(const Duration(days: 365 * 20)), // 20 years from now
     );
 
     if (picked != null && picked != DateTime.now()) {
@@ -41,8 +43,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
-  String text =
-      '''This application is designed for super shops. By using this application they can enlist all their products in one place and can deliver. Customers will get a one-stop solution for their daily shopping.''';
+  void deleteTask(String taskId)async{
+    BlocProvider.of<CreateCubit>(context).deleteTask(taskId).then((value) {
+      CustomSnackBar(contentText: 'Task Deleted', backgroundColor: Colors.green).show(context);
+      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context,HomePage.routeName);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +63,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           leading: IconButton(
-            icon: Icon(IconlyBold.arrow_left),
+            icon: const Icon(IconlyBold.arrow_left),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -68,7 +75,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                   position: PopupMenuPosition.under,
-                  icon: Icon(CupertinoIcons.ellipsis_vertical),
+                  icon: const Icon(CupertinoIcons.ellipsis_vertical),
                   onSelected: (String result) {
                     // Handle the selection
                     switch (result) {
@@ -98,11 +105,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           break;
                         }
                         if(state.editStatus is EditFailed){
-                          CustomSnackBar(contentText: 'Failed', backgroundColor: Colors.red);
+                          CustomSnackBar(contentText: 'Failed', backgroundColor: Colors.red).show(context);
                           break;
                         }
                       case 'Delete':
-                        print('Delete selected');
+                        var task =
+                        BlocProvider.of<HomeCubit>(context, listen: false)
+                            .task!;
+                        deleteTask(task.id!);
                         break;
                     }
                   },
@@ -131,7 +141,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ),
         body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
           if (state.detailStatus is DetailLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -157,21 +167,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       model.title!,
                       style: textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       model.desc!,
                       textAlign: TextAlign.left,
                       style: textTheme.bodyMedium?.copyWith(color: Colors.grey),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
+                      padding: const EdgeInsets.only(left: 16, right: 16),
                       height: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -199,9 +209,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
+                      padding: const EdgeInsets.only(left: 16, right: 16),
                       height: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -211,12 +221,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           IconlyBold.arrow_down_2,
                           color: primaryColor,
                         ),
-                        decoration: InputDecoration(border: InputBorder.none),
+                        decoration: const InputDecoration(border: InputBorder.none),
                         value: model.status,
                         hint: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               model.status!,
                               style: textTheme.bodyLarge?.copyWith(
@@ -245,9 +255,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         }).toList(),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
+                      padding: const EdgeInsets.only(left: 16, right: 16),
                       height: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -257,7 +267,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           IconlyBold.arrow_down_2,
                           color: primaryColor,
                         ),
-                        decoration: InputDecoration(border: InputBorder.none),
+                        decoration: const InputDecoration(border: InputBorder.none),
                         value: model.priority,
                         hint: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -267,7 +277,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               size: 30,
                               color: primaryColor,
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               model.priority!,
                               style: textTheme.bodyLarge?.copyWith(
@@ -296,7 +306,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         }).toList(),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     AspectRatio(
                       aspectRatio: 1 / 1,
                       child: GestureDetector(
@@ -326,14 +336,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
                         },
                         child: QrImageView(
-                          padding: EdgeInsets.all(24),
+                          padding: const EdgeInsets.all(24),
                           data: model.id!,
                           version: QrVersions.auto,
                           // size: 200.0,
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                 ),
               ),
@@ -351,7 +361,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     size: 60,
                     color: primaryColor,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(

@@ -8,8 +8,6 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return
@@ -18,7 +16,7 @@ class AppButton extends StatelessWidget {
             backgroundColor: colorScheme.primary,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12)),
-            minimumSize: Size(double.infinity, 50)),
+            minimumSize: const Size(double.infinity, 50)),
         onPressed: onPressed,
         child: Text(
           title,

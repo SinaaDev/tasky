@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky/core/models/TokenModel.dart';
 import 'package:tasky/features/feature_auth/presentation/bloc/auth_cubit.dart';
+import 'package:tasky/features/feature_auth/presentation/screens/sign_in_screen.dart';
 import 'package:tasky/features/feature_create/presentation/bloc/create_cubit.dart';
 import 'package:tasky/features/feature_create/presentation/screens/create_screen.dart';
 import 'package:tasky/features/feature_home/presentation/screens/profile_screen.dart';
@@ -34,27 +35,25 @@ class _HomePageState extends State<HomePage> {
     'Waiting',
     'Finished',
   ];
-  bool activeSwitch = false;
+  late bool activeSwitch;
+
+  List<AllTaskModel> tasksList = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<HomeCubit>(context).fetchAllTasks();
+    activeSwitch = false;
+    print('init state');
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    print('did change');
-  }
-
-  List<AllTaskModel> tasksList = [];
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final primaryColor = Theme.of(context).primaryColor;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -65,10 +64,11 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(onPressed: () {
             Navigator.pushNamed(context, ProfileScreen.routeName);
-          }, icon: Icon(Iconsax.profile_circle)),
+          }, icon: const Icon(Iconsax.profile_circle)),
           IconButton(onPressed: () {
             BlocProvider.of<AuthCubit>(context).logout();
-          }, icon: Icon(Iconsax.logout)),
+            Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+          }, icon: const Icon(Iconsax.logout)),
         ],
       ),
       body: RefreshIndicator(
@@ -80,13 +80,13 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'My Tasks',
                 style: textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold, color: Colors.grey[700]),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               BlocBuilder<HomeCubit, HomeState>(
                 // buildWhen: (previous, current) {
                 //   if(current.homeStatus is HomeCompleted){
@@ -107,12 +107,12 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: primaryColor.withOpacity(0.4),
                             showCheckmark: false,
                             selectedColor: primaryColor,
-                            labelStyle: TextStyle(
+                            labelStyle: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24),
-                                side: BorderSide(color: Colors.white)),
+                                side: const BorderSide(color: Colors.white)),
                             // color: MaterialStatePropertyAll(primaryColor.withOpacity(0.2)),
                             label: Text(_choiceList[index]),
                             selected: defaultChoiceIndex == index,
@@ -163,8 +163,10 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
+
+
                     if (state.homeStatus is HomeLoading) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (state.homeStatus is HomeCompleted) {
@@ -174,6 +176,8 @@ class _HomePageState extends State<HomePage> {
                      tasksList = homeCompleted.allTaskList;
                      activeSwitch = true;
                       }
+
+                      if(tasksList.isNotEmpty){
 
                       return ListView.builder(
                           itemCount: tasksList.length,
@@ -186,7 +190,28 @@ class _HomePageState extends State<HomePage> {
                                 priority: tasksList[i].priority!,
                                 status: tasksList[i].status!,
                                 createdAt: tasksList[i].createdAt!);
-                          });
+                          });}else{
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.hourglass_empty,
+                                size: 60,
+                                color: primaryColor,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                'No Task Available',
+                                style: textTheme.titleMedium,
+                              )
+                            ],
+                          ),
+                        );
+                      }
                     }
 
                     if (state.homeStatus is HomeFailed) {
@@ -200,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                               size: 60,
                               color: primaryColor,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Text(
@@ -244,11 +269,11 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 foregroundColor: primaryColor,
-                child: Icon(CupertinoIcons.qrcode),
+                child: const Icon(CupertinoIcons.qrcode),
               ),
             ),
           ),
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
           SizedBox(
             width: 64,
             height: 64,
@@ -263,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 foregroundColor: Colors.white,
-                child: Icon(CupertinoIcons.add),
+                child: const Icon(CupertinoIcons.add),
               ),
             ),
           ),

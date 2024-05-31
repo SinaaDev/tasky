@@ -1,13 +1,29 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:tasky/features/feature_auth/presentation/screens/sign_in_screen.dart';
+import 'package:tasky/features/feature_home/presentation/screens/home_screen.dart';
 
-class OnboardingScreen extends StatelessWidget {
+import '../../../feature_auth/presentation/bloc/auth_cubit.dart';
+
+class OnboardingScreen extends StatefulWidget {
   static const routeName = '/onboarding_screen';
 
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<AuthCubit>(context).checkAuth();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,29 +76,62 @@ class OnboardingScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                         top: 32, left: 22, right: 22, bottom: height * 0.05),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            minimumSize: Size(double.infinity, 50)),
-                        onPressed: goToAuthPage,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Let's Start ",
-                              style: textTheme.titleMedium?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19),
-                            ),
-                            Icon(
-                              IconlyBold.arrow_right,
-                              color: Colors.white,
-                            )
-                          ],
-                        )),
+                    child: BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+
+                        if(state.authStatus is LoggedIn){
+                          return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  minimumSize: Size(double.infinity, 50)),
+                              onPressed: (){Navigator.pushReplacementNamed(context, HomePage.routeName);},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Let's Start ",
+                                    style: textTheme.titleMedium?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19),
+                                  ),
+                                  const Icon(
+                                    IconlyBold.arrow_right,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ));
+
+                        }else{
+                          return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  minimumSize: Size(double.infinity, 50)),
+                              onPressed: (){Navigator.pushReplacementNamed(context, SignInScreen.routeName);},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Let's Start ",
+                                    style: textTheme.titleMedium?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19),
+                                  ),
+                                  const Icon(
+                                    IconlyBold.arrow_right,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ));
+                        }
+
+                      },
+                    ),
                   )
                 ],
               ),

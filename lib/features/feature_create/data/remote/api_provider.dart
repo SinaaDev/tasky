@@ -41,5 +41,19 @@ class ApiProvider {
     print(response.data);
   }
 
+  Future<dynamic> sendDeleteRequest(String taskId)async{
+    var headers = {
+      'Authorization': 'Bearer ${await TokenManager.instance.getAccessToken()}'
+    };
+    var response = await dio.request(
+      'https://todo.iraqsapp.com/todos/$taskId',
+      options: Options(
+        method: 'DELETE',
+        headers: headers,
+      ),
+    );
+    print('Delete response: ${response.data}');
+    return response;
+  }
 
 }

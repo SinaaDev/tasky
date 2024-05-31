@@ -15,7 +15,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   TaskRepository taskRepository = TaskRepository();
 
-  HomeCubit() : super(HomeState(HomeLoading(),DetailLoading(),EditLoading()));
+  HomeCubit() : super(HomeState(HomeEmpty(),DetailLoading(),EditLoading()));
 
   HomeApiProvider apiProvider = HomeApiProvider();
 

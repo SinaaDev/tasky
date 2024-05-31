@@ -2,7 +2,7 @@ part of 'home_cubit.dart';
 
 abstract class HomeStatus{}
 
-class HomeInit extends HomeStatus{}
+class HomeEmpty extends HomeStatus{}
 
 class HomeLoading extends HomeStatus{}
 
