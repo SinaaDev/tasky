@@ -9,7 +9,13 @@ class Api {
 
   static Future<String> getNewAccessToken(String refreshToken)async{
     print('getNewAccessToken called');
-    Response response = await Dio().get('https://todo.iraqsapp.com/auth/refresh-token',
+    Response response = await Dio(
+      BaseOptions(
+        baseUrl: 'https://todo.iraqsapp.com',
+        connectTimeout: Duration(seconds: 5),
+        receiveTimeout: Duration(seconds: 5),
+      ),
+    ).get('https://todo.iraqsapp.com/auth/refresh-token',
         queryParameters: {
           'token': refreshToken,
         }

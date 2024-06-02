@@ -7,7 +7,13 @@ import 'package:tasky/core/params/edit_task_params.dart';
 import '../../../../core/token/token_manager.dart';
 
 class HomeApiProvider{
-  Dio dio = Dio();
+  Dio dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://todo.iraqsapp.com',
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 5),
+    ),
+  );
 
   Future<dynamic> sendFetchAllRequest()async{
     var headers = {

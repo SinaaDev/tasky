@@ -57,12 +57,11 @@ class _SignInScreenState extends State<SignInScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
           width: width,
-          child: Stack(
+          child: ListView(
             children: [
               Hero(
                 tag: 'intro',
@@ -70,6 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   'assets/images/intro.png',
                   fit: BoxFit.cover,
                   width: width,
+                  height: height*0.6,
                 ),
               ),
               Form(
@@ -118,9 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       padding: const EdgeInsets.only(
                           top: 32, left: 22, right: 22),
                       child: AppButton(title: 'Sign In', onPressed: (){
-                        BlocProvider.of<AuthCubit>(context).login(passwordController.text).then((value) {
-                          Navigator.pushReplacementNamed(context, HomePage.routeName);
-                        });
+                        BlocProvider.of<AuthCubit>(context).login(passwordController.text);
                       }),
                     ),
                     const SizedBox(height: 20),

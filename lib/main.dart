@@ -17,6 +17,7 @@ import 'package:tasky/features/feature_intro/presentation/screens/splash_screen.
 import 'features/feature_home/presentation/bloc/home_cubit/home_cubit.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (ctx) => AuthCubit()),
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Tasky',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           fontFamily: GoogleFonts.dmSans().fontFamily,

@@ -8,7 +8,13 @@ import 'package:tasky/core/token/api.dart';
 import 'package:tasky/core/token/token_manager.dart';
 
 class ApiProvider {
-  final Dio dio = Dio();
+  final Dio dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://todo.iraqsapp.com',
+        connectTimeout: Duration(seconds: 5),
+        receiveTimeout: Duration(seconds: 3),
+      ),
+  );
   GetStorage getStorage = GetStorage();
 
 

@@ -54,10 +54,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+
       body: SafeArea(
-        child: Stack(
+        child: ListView(
           children: [
             Hero(
               tag: 'intro',
@@ -65,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 'assets/images/intro2.png',
                 fit: BoxFit.cover,
                 width: width,
-                height: 400,
+                height: height*0.28,
               ),
             ),
             Column(
